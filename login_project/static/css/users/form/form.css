@@ -1,0 +1,36 @@
+.form_container {
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.login_form {
+  background-color: rgb(221, 221, 221);
+  border: 1px solid rgb(150, 150, 150);
+  width: 30vw;
+  margin: 1em auto;
+}
+
+.login_title {
+  margin: 1em;
+}
+
+.username_container > p > label {
+  margin: 0 0.3rem;
+}
+.username_container > p > input {
+  font-size: 1.2rem;
+}
+.username_container > * {
+  margin: 1em;
+}
+
+.errorlist {
+  list-style-type: none;
+  font-weight: bold;
+}
+
+.submit_btn {
+  font-size: 1em;
+  padding: 0.5em 2em;
+  cursor: pointer;
+}/*# sourceMappingURL=form.css.map */

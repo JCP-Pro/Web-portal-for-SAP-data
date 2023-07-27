@@ -1,0 +1,134 @@
+:root {
+    --sap_table_header_color: rgb(137, 187, 252);
+    --table_grid_color: rgb(200,200,200);
+}
+
+.welcome_heading {
+    margin: 1em;
+}
+
+table{
+    width:100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.tbl_header{
+    background-color: var(--sap_table_header_color);
+   }
+.tbl_content{
+    height:300px;
+    overflow-x:auto;
+    margin-top: 0px;
+    border: 1px solid rgb(150,150,150);
+}
+
+.tbl_content, .tbl_header {
+    margin: 0 2em;
+}
+th{
+    padding: 20px 15px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+td{
+    padding: 15px;
+    text-align: left;
+    vertical-align:middle;
+    font-weight: 300;
+    font-size: 12px;
+    border-bottom: solid 1px var(--table_grid_color);
+    border-right: solid 1px var(--table_grid_color);
+    // overflow-x: scroll;
+
+    &:last-child {
+        border-right: none;
+    }
+}
+
+tr {
+    cursor: pointer;
+
+    &:hover {
+        background-color: gainsboro;
+    }
+}
+
+.header_row {
+    cursor: initial;
+
+    &:hover {
+        background-color: initial;
+    }
+}
+
+
+//Diaolog styling
+.task_dialog {
+    border: 1px solid var(--table_grid_color);
+    box-shadow: 0 0 5px black;
+    white-space: normal;
+    margin: auto;
+    padding: 2rem;
+}
+
+.dialog_title {
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.dialog_btn {
+    cursor: pointer;
+    padding: 1rem;
+    margin: 1em;
+    border: none;
+    background-color: rgba(255,255,255,1);
+
+    &:hover {
+        background-color: gainsboro;
+        border-radius: 10px;
+    }
+}
+
+.task_form {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    align-items: center;
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+}
+
+.cancel_icon {
+    width: 20px;
+    height: 20px;
+}
+
+.close_icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    margin: 0em;
+}
+
+.exit_dialog_container {
+    padding: .5em;
+    float: right;
+    cursor: pointer;
+    &:hover {
+        background-color: gainsboro;   
+    }
+
+}
+
+.form_btn_container {
+    display: flex;
+    align-items: center;
+    margin: 1em;
+}

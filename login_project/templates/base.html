@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/users/form/form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/users/tasks/tasks.css' %}">
+    <link rel="stylesheet" href="{% static 'css/users/base/base.css' %}">
+</head>
+<body>
+    <main>
+        <!-- {% if messages %}
+		<div class="messages">
+		{% for message in messages %}
+			<div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+				{{ message }}
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %} -->
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+{% load static %}
+<script src="{% static 'scripts/users/tasks.js' %}"></script>
+
+</html>

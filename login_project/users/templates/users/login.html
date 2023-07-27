@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+<div class="form_container">
+	<form class="login_form" method="GET" novalidate>
+		<h2 class="login_title">Login</h2>
+		<div class="username_container">
+			{{form.as_p}}
+		<input class="submit_btn" type="submit" value="Login" />
+	</form>
+</div>
+{% endblock content%}

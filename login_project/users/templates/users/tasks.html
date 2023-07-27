@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} {{user_wf}} tasks {% endblock %}
+
+{% block content %}
+{% if tasks %}
+<dialog class="task_dialog">
+  <div class="exit_dialog_container">
+    <img class ="icon close_icon" src="{% static 'media/close.png' %}" alt="exit dialog" >
+  </div>
+    <h4 class="dialog_title">Task selected</h4>
+    <p class="current_task"></p>
+
+    <form class="task_form" method="dialog">
+      <div class="form_btn_container">
+        <img class="icon" src="{% static 'media/check.png' %}" alt="confirm"> 
+        <input class="dialog_btn confirm_btn" type="submit" value="Confirm" name="confirm">
+      </div>
+      <div class="form_btn_container">
+        <img class="icon cancel_icon" src="{% static 'media/cancel.png' %}" alt="close">
+        <input class="decline_btn dialog_btn" type="submit" name="decline" id="decline" value="Decline">
+      </div>
+    </form>
+  </dialog>
+<h1 class="welcome_heading">Welcome <b class="user_wf">{{user_wf}}</b></h1>
+
+<div class="tbl_header">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <thead>
+        <tr class="header_row">
+          <th>ID Processo</th>
+          <th>Processo</th>
+          <th>Task</th>
+          <th>Role</th>
+          <th>Doc.</th>
+          <th>To do</th>
+          <th>Imp</th>
+          <th>Um</th>
+          <th>Dt</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
+  <div class="tbl_content">
+    <table class="task_table">
+        <tbody class="task_body">
+           
+        </tbody>
+    </table>
+  </div>
+
+{% else %}
+  <b>{{msg}}</b>
+{% endif %}
+{% endblock content%}
