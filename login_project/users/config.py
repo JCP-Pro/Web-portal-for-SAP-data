@@ -1,6 +1,6 @@
 from .models import Username
 
-class Credentials():
+class Credentials:
     user = 'eone'
     password = 'thebest'
 

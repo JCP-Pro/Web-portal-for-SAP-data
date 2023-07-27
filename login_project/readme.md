@@ -25,5 +25,7 @@ Retrieve data from table and store into object: https://www.w3schools.com/jsref/
 
 Dialog javascript + html = https://www.w3schools.com/jsref/met_dialog_show.asp
 
+Browserify bypass execution: https://stackoverflow.com/questions/63423584/how-to-fix-error-nodemon-ps1-cannot-be-loaded-because-running-scripts-is-disabl
+
 [TABLE_TEMPLATE]
 https://codepen.io/nikhil8krishnan/pen/WvYPvv?editors=1000

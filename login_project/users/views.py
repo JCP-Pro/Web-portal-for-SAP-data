@@ -9,6 +9,50 @@ from .config import Credentials
 import json
 import os.path
 
+s = requests.Session()
+
+def authenticate_user_wf(request, url, payload):
+    username = Credentials().user #eone
+    password = Credentials().password #thebest
+    payload = payload
+
+    headers = {
+            'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+        }
+
+    request_param = request
+
+    s.auth = HTTPBasicAuth(username, password)
+
+    r_endpoint_session_post = s.post(url, auth= s.auth, headers=headers, data= payload)
+
+    r_endpoint_session_get = s.get(url)
+
+    get_session_data(request_param, r_endpoint_session_get)
+
+    #debug
+    print("START DEBUG")
+    print(" ")
+    print(f"this is the POST SESSION: {r_endpoint_session_post.text}")
+    print(" ")
+    print(f"Webservice : {r_endpoint_session_get.text}")
+    print(" ")
+    print(f"Webservice header: {r_endpoint_session_get.headers}")
+    print(" ")
+    print(f"Webservice STATUS CODE: {r_endpoint_session_get.status_code}")
+    print(" ")
+    print(f"Webservice request header(what we send to the server): {r_endpoint_session_get.request.headers}")
+    print(" ")
+
+    print("END DEBUG")
+
+def get_session_data(request, session):
+    request.session['data'] = session.text #Get tasks
+
+    request.session['status_code'] = session.status_code #for handling exceptions such as 404, 500 etc...
+
+
+
 def sign_in(request):
     if request.method == 'GET':
 
@@ -23,48 +67,14 @@ def sign_in(request):
             return render(request,'users/login.html', {'form': form})
         
         else: #users/login.html?user_wf=<input value>
-            s = requests.Session()
            
             username_wf = form['user_wf'].value() #This gets the value of the input of user_wf
             print(f"user_wf: {username_wf}")
             endpoint_url = 'http://turing.domain.eonegroup.it:8001/sap/bc/zwf_ext_tasks?user_wf='+username_wf
 
-            #currently user-agent is this python script
-            headers = {
-                'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
-            }
-
-            username = Credentials().user #eone
-            password = Credentials().password #thebest
-
-            s.auth = HTTPBasicAuth(username, password)
-
-            r_endpoint_session_post = s.post(endpoint_url, auth= s.auth, headers=headers)
-
-            r_endpoint_session_get = s.get(endpoint_url)
-
-
-            # print(f"this is the POST SESSION: {r_endpoint_session_post.text}")
-            # print(" ")
-            # print(f"Webservice : {r_endpoint_session_get.text}")
-            # print(" ")
-            # print(f"Webservice header: {r_endpoint_session_get.headers}")
-            print(" ")
-            # print(f"Webservice STATUS CODE: {r_endpoint_session_get.status_code}")
-            # print(" ")
-            # print(f"Webservice request header(what we send to the server): {r_endpoint_session_get.request.headers}")
-            # print(" ")
-
-            # print("End")
-
-        
-            # check_user(form['user_wf'].value())# check if user exists or not.
+            authenticate_user_wf(request, endpoint_url, '')
 
             request.session['user_wf'] = username_wf #to pass session name to the next view
-
-            request.session['task_data'] = r_endpoint_session_get.text #Get tasks
-
-            request.session['status_code'] = r_endpoint_session_get.status_code #for handling exceptions such as 404, 500 etc...
 
             redirect_url = 'tasks'
 
@@ -78,11 +88,12 @@ def sign_in(request):
 
 def tasks(request):
     user_session = request.session['user_wf']
+    session_data_to_get = user_session + '_data'
     print("HOME ACCESSED")
     print(" ")
     print(f"Printing the user_wf: {user_session}")
 
-    tasks = request.session['task_data']
+    tasks = request.session['data']
 
     status_code = request.session['status_code']
 
@@ -106,10 +117,14 @@ def tasks(request):
         # msg = "Internal Server Error Occured!"
     else: 
         msg= ''
+        # FIXME: Don't save file of json. Try to store it in a session storage and retrieve it with javascript.
         with open(complete_file_path, 'w') as f:
             f.write(tasks)
 
+    #task operation webservice
+    task_op_wbs = 'http://turing.domain.eonegroup.it:8001/sap/bc/zwf_ext_close?user_wf='+user_session
 
+    # authenticate_user_wf(request, task_op_wbs, payload='')#insert the ID_Proc, Task etc.. in payload.
 
     return render(request, 'users/tasks.html',
                    {'user_wf' : user_session,

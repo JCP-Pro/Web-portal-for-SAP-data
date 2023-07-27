@@ -1,7 +1,6 @@
 const user_wf = document.querySelector('.user_wf').textContent
 const file_name = user_wf+'_tasks.json'
 const root_url = './tasks/'
-// const fs = require('fs')
 // const complete_file_url = root_url+file_name
 //Diaolog buttons
 const task_dialog = document.querySelector(".task_dialog")
@@ -25,11 +24,12 @@ const data_to_send = {
     ID_Proc: "",
     Task: "",
     Flag: "",
+    User_wf: user_wf,
 }
 
-const file_name_to_send = user_wf+'_data.json'
+const file_name_to_send = user_wf+'_data'
 const send_url_root = "C:/Users/jpineda/Desktop/django_login_form/login_project/static/data/users/"
-const destination_url = send_url_root+file_name
+const destination_url = send_url_root+file_name_to_send
 
 /* 
 For testing in the console.
@@ -157,12 +157,14 @@ function on_confirm() {
     Flag: ${flag},\n
     Process ID: ${task_obj.ID_Proc}\n
     Task: ${task_obj.Task}
+    User: ${data_to_send.User_wf}
     `)
     data_to_send.ID_Proc = task_obj.ID_Proc
     data_to_send.Task = task_obj.Task
     data_to_send.Flag = flag
     
-    save_data_to_file(data_to_send)
+    // save_data_to_sessionStorage(data_to_send)
+    load_input_values()
 }
 
 function on_decline() {
@@ -176,27 +178,45 @@ function on_decline() {
     Flag: ${flag},\n
     Process ID: ${task_obj.ID_Proc}\n
     Task: ${task_obj.Task}
+    
     `)
 
-    save_data_to_file(data_to_send)
+    // save_data_to_sessionStorage(data_to_send)
+    load_input_values()
 }
 
-function save_data_to_file(js_obj) {
+//TODO: Tryout first the hidden input fields in the form with a POST method.
+function load_input_values() {
+    let id_proc_input = document.querySelector(".input_id_proc").value
+    let task_input = document.querySelector(".input_task").value
+    let flag_input = document.querySelector(".input_flag").value
+    let user_wf_input = document.querySelector(".input_user_wf").value
+
+    id_proc_input = data_to_send.ID_Proc
+    task_input = data_to_send.Task
+    flag_input = data_to_send.Flag
+    user_wf_input = data_to_send.User_wf
+
+    console.log(`id: ${id_proc_input};  task: ${task_input};  flag: ${flag_input};  user wf: ${user_wf_input}`)
+
+}
+
+function save_data_to_sessionStorage(js_obj) {
     let json_data = JSON.stringify(js_obj)
     console.log(`This is the data i will send: ${json_data}`)
 
-   //TODO: Save the json_data to a json file to be retrieved in python. From python send the json data to the webservice.
-   
-   /* fs.writeFile(file_name_to_send, json_data, (err) => {
-    if (err){
-        console.log(err)
+    if (!sessionStorage.getItem(file_name_to_send)){
+        console.log("It's empty")
+        sessionStorage.setItem(file_name_to_send, json_data)
+        
+    } else if(sessionStorage.getItem(file_name_to_send) != json_data) {
+        console.log("Sesssion data updated")
+        sessionStorage.setItem(file_name_to_send, json_data)
     }
-   }) */
+    else {
+        console.log("The data is the same")
+    }
 
-   /* 
-    TODO: Look at browsify to use "require()" https://browserify.org/
-    then look at https://github.com/browserify/browserify#usage
-    You will find -o 
-    this command should have C:\Users\jpineda\Desktop\django_login_form\login_project\static\scripts\users\bundle\bundle.js as file destination.
-   */
 }
+
+console.log("end script")
