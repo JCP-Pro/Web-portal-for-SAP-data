@@ -1,12 +1,23 @@
 const user_wf = document.querySelector('.user_wf').textContent
-const file_name = user_wf+'_tasks.json'
-const root_url = './tasks/'
-// const complete_file_url = root_url+file_name
+const task_array_json = document.querySelector(".task_array").textContent
+const task_array = JSON.parse(task_array_json)
+
 //Diaolog buttons
 const task_dialog = document.querySelector(".task_dialog")
 const close_dialog_icon = document.querySelector(".exit_dialog_container")
 const confirm_btn = document.querySelector(".confirm_btn")
 const decline_btn = document.querySelector(".decline_btn")
+// const data_input = document.querySelector(".data_input") //Probably gonna have a id so change to #id_data
+const data_input = document.querySelector("#id_data")
+data_input.setAttribute('hidden' , '') //hiding the input field
+//table
+let tbody = document.querySelector(".task_body")
+let row, cell
+
+//responsive table
+let show_elements_array = []
+
+
 //Task_obj for sending data
 const task_obj = {
     ID_Proc:"",
@@ -27,23 +38,10 @@ const data_to_send = {
     User_wf: user_wf,
 }
 
-const file_name_to_send = user_wf+'_data'
-const send_url_root = "C:/Users/jpineda/Desktop/django_login_form/login_project/static/data/users/"
-const destination_url = send_url_root+file_name_to_send
+//debug purpose
+//let task_data = []
 
-/* 
-For testing in the console.
-const task_data = []
- */
-import('./tasks/'+file_name, { assert: { type: "json" } })
-.then((json_task)=> {
-    let array_of_task = json_task.default
-    load_data_to_table(array_of_task)
-})
-.catch(err => console.log(`there has been an error: ${err}`))
-
-let tbody = document.querySelector(".task_body")
-let row, cell
+load_data_to_table(task_array)
 
 function load_data_to_table(data) {
     for (let i = 0; i < data.length; i++) {
@@ -56,22 +54,40 @@ function load_data_to_table(data) {
         row = tbody.insertRow()
         row.id = i //setting id to each row
         cell = row.insertCell()
+        cell.classList.add("cell")
+        cell.classList.add("id_proc")
         cell.textContent = data[i].ID_Proc
         cell = row.insertCell()
+        cell.classList.add("cell")
+        cell.classList.add("proc")
         cell.textContent = data[i].Proc
         cell = row.insertCell()
+        cell.classList.add("cell")
+        cell.classList.add("task")
         cell.textContent = data[i].Task
         cell = row.insertCell()
+        cell.classList.add("cell")
+        cell.classList.add("role")
         cell.textContent = data[i].Role
         cell = row.insertCell()
+        cell.classList.add("cell")
+        cell.classList.add("doc")
         cell.textContent = data[i].Doc
         cell = row.insertCell()
+        cell.classList.add("cell")
+        cell.classList.add("to_do")
         cell.textContent = data[i].To_do
         cell = row.insertCell()
+        cell.classList.add("cell")
+        cell.classList.add("imp")
         cell.textContent = data[i].Imp.trim()
         cell = row.insertCell()
+        cell.classList.add("cell")
+        cell.classList.add("val")
         cell.textContent = data[i].Um
         cell = row.insertCell()
+        cell.classList.add("cell")
+        cell.classList.add("dt")
         cell.textContent = data[i].Dt
         task_click_listener(row)
     }
@@ -93,18 +109,21 @@ function task_operation() {
             const selected_row = content_table.rows[i]
             id_process = selected_row.cells[0].innerHTML
             process = selected_row.cells[1].innerHTML
-            task = selected_row.cells[3].innerHTML
-            role = selected_row.cells[4].innerHTML
-            doc = selected_row.cells[5].innerHTML
+            task = selected_row.cells[2].innerHTML
+            role = selected_row.cells[3].innerHTML
+            doc = selected_row.cells[4].innerHTML
+            to_do = selected_row.cells[5].innerHTML
             imp = selected_row.cells[6].innerHTML
             um = selected_row.cells[7].innerHTML
             dt = selected_row.cells[8].innerHTML
+
 
             task_obj.ID_Proc = id_process
             task_obj.Proc = process
             task_obj.Task = task
             task_obj.Role = role
             task_obj.Doc = doc
+            task_obj.To_do = to_do
             task_obj.Imp = imp
             task_obj.Um = um
             task_obj.Dt = dt
@@ -120,7 +139,7 @@ function task_operation() {
 function show_dialog() {
     task_dialog.show()
     let open_task = document.querySelector(".current_task")
-    let task_to_display = `<ul>
+    let task_to_display = `<ul class="selected_task_list">
     
     <li><b>Id Processo</b>: ${task_obj.ID_Proc}</li>
     <li><b>Processo</b>: ${task_obj.Proc}</li>
@@ -128,7 +147,7 @@ function show_dialog() {
     <li><b>Role</b>: ${task_obj.Role}</li>
     <li><b>Doc</b>: ${task_obj.Doc}</li>
     <li><b>To do</b>: ${task_obj.To_do}</li>
-    <li><b>Imp/<b>: ${task_obj.Imp}</li>
+    <li><b>Imp/</b>: ${task_obj.Imp}</li>
     <li><b>Um</b>: ${task_obj.Um}</li>
     <li><b>Dt</b>: ${task_obj.Dt}</li>
     </ul>
@@ -139,6 +158,19 @@ function show_dialog() {
 close_dialog_icon.addEventListener('click', close_dialog)
 confirm_btn.addEventListener('click', on_confirm)
 decline_btn.addEventListener('click', on_decline)
+
+function load_data_to_obj(flag) {
+    data_to_send.ID_Proc = task_obj.ID_Proc
+    data_to_send.Task = task_obj.Task
+    data_to_send.Flag = flag
+}
+
+//TODO: Tryout first the hidden input fields in the form with a POST method.
+function load_input_values() {
+    let data_to_send_json = JSON.stringify(data_to_send)
+    data_input.value = data_to_send_json
+    console.log(`sending the obj: ${data_input.value}`)
+}
 
 function close_dialog() {
     task_dialog.close()
@@ -152,71 +184,105 @@ document.onkeydown = function key_press(e) {
 
 function on_confirm() {
     let flag = true 
-    console.log(`
+    load_data_to_obj(flag)
+    load_input_values()
+    /* console.log(`
     Retrieving data to send:\n
     Flag: ${flag},\n
     Process ID: ${task_obj.ID_Proc}\n
     Task: ${task_obj.Task}
     User: ${data_to_send.User_wf}
-    `)
-    data_to_send.ID_Proc = task_obj.ID_Proc
-    data_to_send.Task = task_obj.Task
-    data_to_send.Flag = flag
-    
-    // save_data_to_sessionStorage(data_to_send)
-    load_input_values()
+    `) */
 }
+
+
 
 function on_decline() {
     let flag = false
-    data_to_send.ID_Proc = task_obj.ID_Proc
-    data_to_send.Task = task_obj.Task
-    data_to_send.Flag = flag
-
-    console.log(`
+    load_data_to_obj(flag)
+    load_input_values()
+    /* console.log(`
     Retrieving data to send:\n
     Flag: ${flag},\n
     Process ID: ${task_obj.ID_Proc}\n
     Task: ${task_obj.Task}
-    
-    `)
-
-    // save_data_to_sessionStorage(data_to_send)
-    load_input_values()
+    `) */
 }
 
-//TODO: Tryout first the hidden input fields in the form with a POST method.
-function load_input_values() {
-    let id_proc_input = document.querySelector(".input_id_proc").value
-    let task_input = document.querySelector(".input_task").value
-    let flag_input = document.querySelector(".input_flag").value
-    let user_wf_input = document.querySelector(".input_user_wf").value
-
-    id_proc_input = data_to_send.ID_Proc
-    task_input = data_to_send.Task
-    flag_input = data_to_send.Flag
-    user_wf_input = data_to_send.User_wf
-
-    console.log(`id: ${id_proc_input};  task: ${task_input};  flag: ${flag_input};  user wf: ${user_wf_input}`)
-
+//MOBILE VIEW: processo[1], doc[4], to do[5](riga di sotto) ,imp[6]
+function hide_table_content(element) {
+    element.classList.add("hide_element")
 }
 
-function save_data_to_sessionStorage(js_obj) {
-    let json_data = JSON.stringify(js_obj)
-    console.log(`This is the data i will send: ${json_data}`)
+function show_elements(array) {
+    for (i in array) array[i].classList.remove("hide_element")
+}
 
-    if (!sessionStorage.getItem(file_name_to_send)){
-        console.log("It's empty")
-        sessionStorage.setItem(file_name_to_send, json_data)
+function select_elements_to_hide(array) {
+    //take away things you don't want to hide
+    array.splice(1, 1) // proc
+    array.splice(3,1)//doc
+    array.splice(4,1)//imp
+    /* array.splice(3, 1) // doc
+    array.splice(3, 1)// to_do
+    array.splice(3, 1)// imp */
+}
+
+function add_to_element_array(array) {
+    for (i in array) show_elements_array.push(array[i])
+}
+
+const columns = document.querySelectorAll(".th")
+const cells = document.querySelectorAll(".cell")
+var mobile = false //This flag is for the To do inside the processo.
+if (window.innerWidth < 768) mobile_view()
+
+function mobile_view() {
+    let width = window.innerWidth;
+    //if screen size is less than 768px (mobile), show mobile layout
+    if(width < 768) {
+
+        let id_proc_cell = document.querySelectorAll(".proc")
+        let doc_cell = document.querySelectorAll(".doc")
+        let to_do_cell = document.querySelectorAll(".to_do")
+        let imp_cell = document.querySelectorAll(".imp")
+
+        //convert node-list to array so you can .splice()
+        let id_proc_array = [...id_proc_cell]
+        let doc_array = [...doc_cell]
+        let to_do_array = [...to_do_cell]
+        let imp_array = [...imp_cell]
+        let cells_array = [...cells]
+        let column_array = [...columns]
+
+        for(i in to_do_array) { //MOVING THE TODO INSIDE THE PROCESSO
+            if(mobile == false) {
+                id_proc_array[i].innerHTML += `<div class="to_do_moved"><br><b>To do</b>: ${to_do_array[i].innerHTML}</div>`
+            }
+        }
+        mobile = true
+
+        //show_element_array contains all of the elements to show
+        add_to_element_array(id_proc_array)
+        add_to_element_array(doc_array)
+        add_to_element_array(imp_array)
+        // add_to_element_array(to_do_array)
+
+        select_elements_to_hide(column_array)
+        for (i in column_array) hide_table_content(column_array[i])
+        for(i in cells_array) hide_table_content(cells_array[i])
+
+        //after hiding all elements, show the ones you need
+        show_elements(show_elements_array)
         
-    } else if(sessionStorage.getItem(file_name_to_send) != json_data) {
-        console.log("Sesssion data updated")
-        sessionStorage.setItem(file_name_to_send, json_data)
+    } else {
+        let cells_array = [...cells]
+        let column_array = [...columns]
+        show_elements(cells_array)
+        show_elements(column_array)
     }
-    else {
-        console.log("The data is the same")
-    }
-
 }
+
+window.addEventListener('resize', mobile_view)
 
 console.log("end script")

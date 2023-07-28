@@ -35,6 +35,7 @@ th{
     text-transform: uppercase;
 }
 td{
+    word-wrap: break-word;
     padding: 15px;
     text-align: left;
     vertical-align:middle;
@@ -42,7 +43,6 @@ td{
     font-size: 12px;
     border-bottom: solid 1px var(--table_grid_color);
     border-right: solid 1px var(--table_grid_color);
-    // overflow-x: scroll;
 
     &:last-child {
         border-right: none;
@@ -131,4 +131,77 @@ tr {
     display: flex;
     align-items: center;
     margin: 1em;
+
+    //hiding the label of data
+    & > p > label {
+        display: none;
+    }
+}
+
+
+
+//responsive view: processo, doc, to do(riga di sotto) ,imp
+.hide_element { 
+    display: none;
+}
+
+@media (max-width: 767px) {
+
+    .dialog_btn {
+        margin: .2rem;
+        font-size: .7rem;
+    }
+
+    .task_form {
+        font-size: 0;
+    }
+
+    .icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .close_icon {
+        width: 15px;
+        height: 15px;
+    }
+
+    .cancel_icon {
+        width: 15px;
+        height: 15px;
+    }
+}
+
+@media (max-width: 425px) {
+    .task_dialog {
+        width: -webkit-fill-available;
+        font-size: .75rem;
+        margin: 2em;
+    }
+
+    .cell {
+        font-size: 10px;
+    }
+
+    .th {
+        font-size: 10px;
+    }
+
+    .welcome_heading {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .selected_task_list {
+        text-align: center;
+        list-style: none;
+        & > li {
+            margin: .5rem;
+        }
+    }
+
+    .task_form {
+        justify-content: center;
+        flex-direction: column;
+    }
 }

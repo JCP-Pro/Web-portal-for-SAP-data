@@ -1,59 +1,17 @@
 from django.shortcuts import render, redirect
-from .forms import LoginForm
+from .forms import LoginForm, TaskForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 import requests
 from requests.auth import HTTPBasicAuth
 from requests import Session
-from .config import Credentials
+from .config import Credentials, authenticate_user_wf
 import json
 import os.path
 
 s = requests.Session()
 
-def authenticate_user_wf(request, url, payload):
-    username = Credentials().user #eone
-    password = Credentials().password #thebest
-    payload = payload
-
-    headers = {
-            'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
-        }
-
-    request_param = request
-
-    s.auth = HTTPBasicAuth(username, password)
-
-    r_endpoint_session_post = s.post(url, auth= s.auth, headers=headers, data= payload)
-
-    r_endpoint_session_get = s.get(url)
-
-    get_session_data(request_param, r_endpoint_session_get)
-
-    #debug
-    print("START DEBUG")
-    print(" ")
-    print(f"this is the POST SESSION: {r_endpoint_session_post.text}")
-    print(" ")
-    print(f"Webservice : {r_endpoint_session_get.text}")
-    print(" ")
-    print(f"Webservice header: {r_endpoint_session_get.headers}")
-    print(" ")
-    print(f"Webservice STATUS CODE: {r_endpoint_session_get.status_code}")
-    print(" ")
-    print(f"Webservice request header(what we send to the server): {r_endpoint_session_get.request.headers}")
-    print(" ")
-
-    print("END DEBUG")
-
-def get_session_data(request, session):
-    request.session['data'] = session.text #Get tasks
-
-    request.session['status_code'] = session.status_code #for handling exceptions such as 404, 500 etc...
-
-
-
-def sign_in(request):
+def login_view(request): #For login.html
     if request.method == 'GET':
 
         print("GET METHOD ACCESSED!")
@@ -86,9 +44,8 @@ def sign_in(request):
     
 
 
-def tasks(request):
+def tasks_view(request): #For task.html
     user_session = request.session['user_wf']
-    session_data_to_get = user_session + '_data'
     print("HOME ACCESSED")
     print(" ")
     print(f"Printing the user_wf: {user_session}")
@@ -99,12 +56,6 @@ def tasks(request):
 
     # print(f"this is the task : {status_code}")
 
-    save_path = "C:/Users/jpineda/Desktop/django_login_form/login_project/static/scripts/users/tasks"
-
-    task_file_name = user_session+'_tasks.json'#example: glini_tasks.json
-
-    complete_file_path = os.path.join(save_path, task_file_name)
-
     if tasks == "No open task found" and status_code == 200:
         tasks = False
         msg = "No open task found"
@@ -114,23 +65,35 @@ def tasks(request):
     elif status_code == 500:
         tasks = False
         msg = f"Error: {status_code}\n Internal Server Error Occured!"
-        # msg = "Internal Server Error Occured!"
     else: 
         msg= ''
-        # FIXME: Don't save file of json. Try to store it in a session storage and retrieve it with javascript.
-        with open(complete_file_path, 'w') as f:
-            f.write(tasks)
-
+        
+    
     #task operation webservice
-    task_op_wbs = 'http://turing.domain.eonegroup.it:8001/sap/bc/zwf_ext_close?user_wf='+user_session
+    form = TaskForm()
+    task_op_wbs_post = 'http://turing.domain.eonegroup.it:8001/sap/bc/zwf_ext_close?user_wf='+user_session
 
-    # authenticate_user_wf(request, task_op_wbs, payload='')#insert the ID_Proc, Task etc.. in payload.
+    print(f"PRINTING THE REQUEST {request}")
+    if request.method == "GET":
+        print("TASK GET METHOD ACCESSED")
+        data = json.dumps(dict(request.GET))
+        task_op_wbs_get = 'http://turing.domain.eonegroup.it:8001/sap/bc/zwf_ext_close?user_wf='+user_session+data
+        
+        authenticate_user_wf(request, task_op_wbs_get, '')
+        print(f"DATA IN THE GET METHOD: {data}")
+    elif request.method == "POST":
+        print("TASK POST METHOD ACCESSED")
+        data = json.loads(json.dumps(dict(request.POST)))
+        authenticate_user_wf(request, task_op_wbs_post, data)
+        # redirect_url = 'task'
+        # return redirect(redirect_url)
+    else: print("ERROR METHOD")
 
     return render(request, 'users/tasks.html',
                    {'user_wf' : user_session,
                     'msg': msg,
-                    'task_file_name': task_file_name,
-                    'tasks': tasks
+                    'tasks': tasks,
+                    'form': form,
                     })
 
 #TODO: Send ID_Proc and Task from table in the api call. Where? to -> http://turing.domain.eonegroup.it:8001/sap/bc/zwf_ext_close

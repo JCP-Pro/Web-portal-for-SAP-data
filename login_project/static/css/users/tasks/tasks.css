@@ -38,6 +38,7 @@ th {
 }
 
 td {
+  word-wrap: break-word;
   padding: 15px;
   text-align: left;
   vertical-align: middle;
@@ -127,4 +128,61 @@ tr:hover {
   display: flex;
   align-items: center;
   margin: 1em;
+}
+.form_btn_container > p > label {
+  display: none;
+}
+
+.hide_element {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .dialog_btn {
+    margin: 0.2rem;
+    font-size: 0.7rem;
+  }
+  .task_form {
+    font-size: 0;
+  }
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+  .close_icon {
+    width: 15px;
+    height: 15px;
+  }
+  .cancel_icon {
+    width: 15px;
+    height: 15px;
+  }
+}
+@media (max-width: 425px) {
+  .task_dialog {
+    width: -webkit-fill-available;
+    font-size: 0.75rem;
+    margin: 2em;
+  }
+  .cell {
+    font-size: 10px;
+  }
+  .th {
+    font-size: 10px;
+  }
+  .welcome_heading {
+    font-size: 1rem;
+    text-align: center;
+  }
+  .selected_task_list {
+    text-align: center;
+    list-style: none;
+  }
+  .selected_task_list > li {
+    margin: 0.5rem;
+  }
+  .task_form {
+    justify-content: center;
+    flex-direction: column;
+  }
 }/*# sourceMappingURL=tasks.css.map */
