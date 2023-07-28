@@ -59,6 +59,11 @@
   </div>
 
 {% else %}
-  <b>{{msg}}</b>
+<div class="err_container">
+  <b class="err_msg">{{msg}}</b>
+  <br>
+  <br>
+  <a href="{% url 'login' %}" class="login_link">Back to login</a>
+</div>
 {% endif %}
 {% endblock content%}

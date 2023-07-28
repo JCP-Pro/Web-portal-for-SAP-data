@@ -33,4 +33,11 @@
   font-size: 1em;
   padding: 0.5em 2em;
   cursor: pointer;
+}
+
+@media (max-width: 970px) {
+  .login_form {
+    width: initial;
+    margin: 1em 1em;
+  }
 }/*# sourceMappingURL=form.css.map */

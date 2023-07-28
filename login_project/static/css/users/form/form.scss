@@ -39,3 +39,11 @@ $border_login_form: rgb(150,150,150);
     padding: .5em 2em;
     cursor: pointer;
 }
+
+//responsive, mobile view
+@media (max-width: 970px){
+    .login_form {
+        width: initial;
+        margin: 1em 1em;
+    }  
+}
