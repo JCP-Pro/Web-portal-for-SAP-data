@@ -96,10 +96,21 @@ tr:hover {
   border-radius: 10px;
 }
 
+.selected_task_list {
+  list-style: none;
+}
+
+.to_do_moved {
+  margin-top: 0.5rem;
+}
+
+li > .to_do_moved {
+  margin-top: 0;
+}
+
 .task_form {
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
   align-items: center;
 }
 
@@ -121,6 +132,15 @@ tr:hover {
   margin: 0em;
 }
 
+.attachment_container {
+  display: flex;
+  align-items: center;
+}
+
+.attachment_btn {
+  margin-top: 1em;
+}
+
 .exit_dialog_container {
   padding: 0.5em;
   float: right;
@@ -128,6 +148,13 @@ tr:hover {
 }
 .exit_dialog_container:hover {
   background-color: gainsboro;
+}
+
+.exit_dialog_btn {
+  background: none;
+  border: none;
+  padding: 0.3rem;
+  cursor: pointer;
 }
 
 .form_btn_container {
@@ -143,10 +170,13 @@ tr:hover {
   display: none;
 }
 
+.show_element {
+  display: block;
+}
+
 @media (max-width: 767px) {
   .dialog_btn {
     margin: 0.2rem;
-    font-size: 0.7rem;
   }
   .task_form {
     font-size: 0;
@@ -170,6 +200,12 @@ tr:hover {
     font-size: 0.75rem;
     margin: 2em;
   }
+  .dialog_btn, .attachment_container {
+    font-size: 0.7rem;
+  }
+  .attachment_container {
+    justify-content: center;
+  }
   .cell {
     font-size: 10px;
   }
@@ -186,6 +222,9 @@ tr:hover {
   }
   .selected_task_list > li {
     margin: 0.5rem;
+  }
+  li > .to_do_moved {
+    margin: 0.5em;
   }
   .task_form {
     justify-content: center;

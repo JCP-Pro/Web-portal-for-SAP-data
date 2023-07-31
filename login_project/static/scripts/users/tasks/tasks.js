@@ -7,10 +7,12 @@ const task_dialog = document.querySelector(".task_dialog")
 const close_dialog_icon = document.querySelector(".exit_dialog_container")
 const confirm_btn = document.querySelector(".confirm_btn")
 const decline_btn = document.querySelector(".decline_btn")
+//Diaolog task description
+const open_task = document.querySelector(".current_task")
 // const data_input = document.querySelector(".data_input") //Probably gonna have a id so change to #id_data
-const data_input = document.querySelector("#id_data")
-data_input.setAttribute('hidden' , '') //hiding the input field
-//table
+export const data_input = document.querySelectorAll("#id_data")
+data_input.forEach((e) => e.setAttribute('hidden', '')) //Hiding the input fields which sends data. 
+// data_input[0] is for hiding ATTACH INPUT
 let tbody = document.querySelector(".task_body")
 let row, cell
 
@@ -19,7 +21,7 @@ let show_elements_array = []
 
 
 //Task_obj for sending data
-const task_obj = {
+export const task_obj = {
     ID_Proc:"",
     Proc:"",
     Task:"",
@@ -107,15 +109,15 @@ function task_operation() {
         
         if (`${i}` === `${this.id}`) {
             const selected_row = content_table.rows[i]
-            id_process = selected_row.cells[0].innerHTML
-            process = selected_row.cells[1].innerHTML
-            task = selected_row.cells[2].innerHTML
-            role = selected_row.cells[3].innerHTML
-            doc = selected_row.cells[4].innerHTML
-            to_do = selected_row.cells[5].innerHTML
-            imp = selected_row.cells[6].innerHTML
-            um = selected_row.cells[7].innerHTML
-            dt = selected_row.cells[8].innerHTML
+            let id_process = selected_row.cells[0].innerHTML
+            let process = selected_row.cells[1].innerHTML
+            let task = selected_row.cells[2].innerHTML
+            let role = selected_row.cells[3].innerHTML
+            let doc = selected_row.cells[4].innerHTML
+            let to_do = selected_row.cells[5].innerHTML
+            let imp = selected_row.cells[6].innerHTML
+            let um = selected_row.cells[7].innerHTML
+            let dt = selected_row.cells[8].innerHTML
 
 
             task_obj.ID_Proc = id_process
@@ -131,28 +133,44 @@ function task_operation() {
         }
     }
 
-    task_obj_json = JSON.stringify(task_obj)
-
     show_dialog()
 }
 
 function show_dialog() {
     task_dialog.show()
-    let open_task = document.querySelector(".current_task")
-    let task_to_display = `<ul class="selected_task_list">
-    
-    <li><b>Id Processo</b>: ${task_obj.ID_Proc}</li>
-    <li><b>Processo</b>: ${task_obj.Proc}</li>
-    <li><b>Task</b>: ${task_obj.Task}</li>
-    <li><b>Role</b>: ${task_obj.Role}</li>
-    <li><b>Doc</b>: ${task_obj.Doc}</li>
-    <li><b>To do</b>: ${task_obj.To_do}</li>
-    <li><b>Imp/</b>: ${task_obj.Imp}</li>
-    <li><b>Um</b>: ${task_obj.Um}</li>
-    <li><b>Dt</b>: ${task_obj.Dt}</li>
-    </ul>
-    `
-    open_task.innerHTML = task_to_display
+
+    if(window.innerWidth < 768) {
+        let task_to_display = `<ul class="selected_task_list">
+        
+        <li><b>Id Processo</b>: ${task_obj.ID_Proc}</li>
+        <li><b>Processo</b>: ${task_obj.Proc}</li>
+        <li><b>Task</b>: ${task_obj.Task}</li>
+        <li><b>Role</b>: ${task_obj.Role}</li>
+        <li><b>Doc</b>: ${task_obj.Doc}</li>
+        <li><b>Imp/</b>: ${task_obj.Imp}</li>
+        <li><b>Um</b>: ${task_obj.Um}</li>
+        <li><b>Dt</b>: ${task_obj.Dt}</li>
+        </ul>
+        `
+        open_task.innerHTML = task_to_display
+    }
+    else {
+
+        let task_to_display = `<ul class="selected_task_list">
+        
+        <li><b>Id Processo</b>: ${task_obj.ID_Proc}</li>
+        <li><b>Processo</b>: ${task_obj.Proc}</li>
+        <li><b>Task</b>: ${task_obj.Task}</li>
+        <li><b>Role</b>: ${task_obj.Role}</li>
+        <li><b>Doc</b>: ${task_obj.Doc}</li>
+        <li><b>To do</b>: ${task_obj.To_do}</li>
+        <li><b>Imp/</b>: ${task_obj.Imp}</li>
+        <li><b>Um</b>: ${task_obj.Um}</li>
+        <li><b>Dt</b>: ${task_obj.Dt}</li>
+        </ul>
+        `
+        open_task.innerHTML = task_to_display
+    }
 }
 
 close_dialog_icon.addEventListener('click', close_dialog)
@@ -165,11 +183,10 @@ function load_data_to_obj(flag) {
     data_to_send.Flag = flag
 }
 
-//TODO: Tryout first the hidden input fields in the form with a POST method.
 function load_input_values() {
     let data_to_send_json = JSON.stringify(data_to_send)
-    data_input.value = data_to_send_json
-    console.log(`sending the obj: ${data_input.value}`)
+    data_input[1].value = data_to_send_json
+    console.log(`sending the obj: ${data_input[1].value}`)
 }
 
 function close_dialog() {
@@ -214,8 +231,8 @@ function hide_table_content(element) {
     element.classList.add("hide_element")
 }
 
-function show_elements(array) {
-    for (i in array) array[i].classList.remove("hide_element")
+export function show_elements(array) {
+    for (let i in array) array[i].classList.remove("hide_element")
 }
 
 function select_elements_to_hide(array) {
@@ -223,13 +240,10 @@ function select_elements_to_hide(array) {
     array.splice(1, 1) // proc
     array.splice(3,1)//doc
     array.splice(4,1)//imp
-    /* array.splice(3, 1) // doc
-    array.splice(3, 1)// to_do
-    array.splice(3, 1)// imp */
 }
 
 function add_to_element_array(array) {
-    for (i in array) show_elements_array.push(array[i])
+    for (let i in array) show_elements_array.push(array[i])
 }
 
 const columns = document.querySelectorAll(".th")
@@ -240,12 +254,12 @@ if (window.innerWidth < 768) mobile_view()
 function mobile_view() {
     let width = window.innerWidth;
     //if screen size is less than 768px (mobile), show mobile layout
+    let id_proc_cell = document.querySelectorAll(".proc")
+    let doc_cell = document.querySelectorAll(".doc")
+    let imp_cell = document.querySelectorAll(".imp")
+    let to_do_cell = document.querySelectorAll(".to_do")
     if(width < 768) {
 
-        let id_proc_cell = document.querySelectorAll(".proc")
-        let doc_cell = document.querySelectorAll(".doc")
-        let to_do_cell = document.querySelectorAll(".to_do")
-        let imp_cell = document.querySelectorAll(".imp")
 
         //convert node-list to array so you can .splice()
         let id_proc_array = [...id_proc_cell]
@@ -255,9 +269,9 @@ function mobile_view() {
         let cells_array = [...cells]
         let column_array = [...columns]
 
-        for(i in to_do_array) { //MOVING THE TODO INSIDE THE PROCESSO
+        for(let i in to_do_array) { //MOVING THE TODO INSIDE THE PROCESSO
             if(mobile == false) {
-                id_proc_array[i].innerHTML += `<div class="to_do_moved"><br><b>To do</b>: ${to_do_array[i].innerHTML}</div>`
+                id_proc_array[i].innerHTML += `<div class="to_do_moved"><b>To do</b>: ${to_do_array[i].innerHTML}</div>`
             }
         }
         mobile = true
@@ -269,8 +283,8 @@ function mobile_view() {
         // add_to_element_array(to_do_array)
 
         select_elements_to_hide(column_array)
-        for (i in column_array) hide_table_content(column_array[i])
-        for(i in cells_array) hide_table_content(cells_array[i])
+        for (let i in column_array) hide_table_content(column_array[i])
+        for(let i in cells_array) hide_table_content(cells_array[i])
 
         //after hiding all elements, show the ones you need
         show_elements(show_elements_array)
@@ -278,8 +292,18 @@ function mobile_view() {
     } else {
         let cells_array = [...cells]
         let column_array = [...columns]
+        let to_do_array = [...to_do_cell]
+        let id_proc_array = [...id_proc_cell]
         show_elements(cells_array)
         show_elements(column_array)
+        for(let i in to_do_array) { //MOVING THE TODO INSIDE THE PROCESSO
+            console.log("going back to desktop view")
+            let delete_text = id_proc_array[i].innerHTML
+            delete_text = delete_text.replace(`<div class="to_do_moved"><b>To do</b>: ${to_do_array[i].innerHTML}</div>`, "")
+            id_proc_array[i].innerHTML = delete_text
+        }
+        mobile = false
+        
     }
 }
 

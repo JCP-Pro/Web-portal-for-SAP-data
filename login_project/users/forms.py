@@ -9,3 +9,6 @@ class LoginForm(forms.Form):
 
 class TaskForm(forms.Form):
     data = forms.CharField(max_length=255)
+
+class FileForm(forms.Form):
+    data = forms.CharField(max_length=255)

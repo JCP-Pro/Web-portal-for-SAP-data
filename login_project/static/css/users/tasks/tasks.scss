@@ -100,10 +100,21 @@ tr {
     }
 }
 
+.selected_task_list {
+    list-style: none;
+}
+
+.to_do_moved {
+    margin-top: .5rem;
+}
+
+li > .to_do_moved {
+    margin-top: 0;
+}
+
 .task_form {
     display: flex;
     justify-content: space-between;
-    margin-top: 1rem;
     align-items: center;
 }
 
@@ -124,6 +135,15 @@ tr {
     margin: 0em;
 }
 
+.attachment_container {
+    display: flex;
+    align-items: center;
+}
+
+.attachment_btn {
+    margin-top: 1em;
+}
+
 .exit_dialog_container {
     padding: .5em;
     float: right;
@@ -132,6 +152,13 @@ tr {
         background-color: gainsboro;   
     }
 
+}
+
+.exit_dialog_btn {
+    background: none;
+    border: none;
+    padding: .3rem;
+    cursor: pointer;
 }
 
 .form_btn_container {
@@ -152,12 +179,16 @@ tr {
     display: none;
 }
 
+.show_element { //show the task table and hide the file table
+    display: block;
+}
+
 @media (max-width: 767px) {
 
     .dialog_btn {
         margin: .2rem;
-        font-size: .7rem;
     }
+
 
     .task_form {
         font-size: 0;
@@ -186,6 +217,14 @@ tr {
         margin: 2em;
     }
 
+    .dialog_btn, .attachment_container {
+        font-size: .7rem;
+    }
+
+    .attachment_container {
+        justify-content: center;
+    }
+
     .cell {
         font-size: 10px;
     }
@@ -205,6 +244,10 @@ tr {
         & > li {
             margin: .5rem;
         }
+    }
+
+    li > .to_do_moved {
+        margin: .5em;
     }
 
     .task_form {

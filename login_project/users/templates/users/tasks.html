@@ -10,26 +10,39 @@
 <p class="task_array" hidden>{{tasks}}</p>
 <dialog class="task_dialog">
   <div class="exit_dialog_container">
-    <img class ="icon close_icon" src="{% static 'media/close.png' %}" alt="exit dialog" >
+    <button class="exit_dialog_btn">
+      <img class ="icon close_icon" src="{% static 'media/task_dialog/close.png' %}" alt="exit dialog" >
+  </button>
   </div>
-    <h4 class="dialog_title">Task selected</h4>
-    <p class="current_task"></p>
 
+  <h4 class="dialog_title">Task selected</h4>
+  <p class="current_task"></p>
+
+  <div class="task_form">
     <form class="task_form" method="POST">
       {% csrf_token %}
-
       <div class="form_btn_container">
-        {{form.as_p}}
-        <input class="data_input" type="text" name="data" hidden>
-        <img class="icon" src="{% static 'media/check.png' %}" alt="confirm"> 
+        <button class="attachment_btn dialog_btn" type="submit">
+          <img  class="attachment_icon icon" src="{% static 'media/task_dialog/folder.png' %}" alt="Attachment Files">
+        </button>
+      </div>
+      {{file_form.as_p}}
+    </form>
+
+    <form class="task_form" method="POST"> 
+      {% csrf_token %}
+      <div class="form_btn_container">
+        {{conf_dec_form.as_p}}
+        <img class="icon" src="{% static 'media/task_dialog/check.png' %}" alt="confirm"> 
         <input class="dialog_btn confirm_btn" type="submit" value="Confirm" name="confirm">
       </div>
       <div class="form_btn_container">
-        <img class="icon cancel_icon" src="{% static 'media/cancel.png' %}" alt="close">
+        <img class="icon cancel_icon" src="{% static 'media/task_dialog/cancel.png' %}" alt="close">
         <input class="decline_btn dialog_btn" type="submit" name="decline" id="decline" value="Decline">
       </div>
     </form>
-  </dialog>
+  </div>
+</dialog>
 <h1 class="welcome_heading">Welcome <b class="user_wf">{{user_wf}}</b></h1>
 
 <div class="tbl_header">
@@ -48,15 +61,34 @@
         </tr>
       </thead>
     </table>
-  </div>
+</div>
 
-  <div class="tbl_content">
+<div class="tbl_content">
     <table class="task_table">
         <tbody class="task_body">
            
         </tbody>
     </table>
-  </div>
+</div>
+
+<div class="tbl_header hide_element">
+  <table cellpadding="0" cellspacing="0" border="0">
+    <thead>
+      <tr class="header_row">
+        <th class="files">ID File</th>
+      </tr>
+    </thead>
+  </table>
+</div>
+
+<div class="tbl_content hide_element" >
+  <p class="attachment_data" hidden>{{attachments}}</p>
+  <table class="attachment_table">
+    <tbody class="attachment_body">
+      
+    </tbody>
+  </table>
+</div>
 
 {% else %}
 <div class="err_container">
