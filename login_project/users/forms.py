@@ -8,7 +8,7 @@ class LoginForm(forms.Form):
     # password_wf = forms.CharField(max_length=65, widget=forms.PasswordInput, required=False)
 
 class TaskForm(forms.Form):
-    data = forms.CharField(max_length=255)
+    data = forms.CharField(max_length=255, required= False)
 
-class FileForm(forms.Form):
-    data = forms.CharField(max_length=255)
+class AttachForm(forms.Form):
+    data = forms.CharField(max_length=255, required= False)

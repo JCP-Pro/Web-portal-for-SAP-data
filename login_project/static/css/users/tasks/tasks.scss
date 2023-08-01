@@ -1,6 +1,7 @@
 :root {
     --sap_table_header_color: rgb(137, 187, 252);
     --table_grid_color: rgb(200,200,200);
+    --background_btn_color: gainsboro;
 }
 
 //if error message
@@ -12,6 +13,10 @@
 
 .welcome_heading {
     margin: 1em;
+}
+
+.user_wf {
+    text-transform: lowercase;
 }
 
 table{
@@ -183,6 +188,39 @@ li > .to_do_moved {
     display: block;
 }
 
+// -------------------attachment styling -----------------------
+.nav_list {
+    display:flex;
+    list-style: none;
+    margin-left: 1rem;
+}
+
+.nav_item {
+    margin: 1rem;  
+}
+
+.li_btn {
+    // border: 1px solid rgb(233, 233, 233);
+    border: none;
+    border-radius: 100%;
+    background-color: white;
+    padding: 1rem;
+    cursor: pointer;
+    transition: 250ms;
+    &:hover {
+        background: var(--background_btn_color);
+    }
+}
+
+.opacity {
+    opacity: .5;
+    
+    &:hover {
+        opacity: 1;
+    }
+}
+
+
 @media (max-width: 767px) {
 
     .dialog_btn {
@@ -208,6 +246,12 @@ li > .to_do_moved {
         width: 15px;
         height: 15px;
     }
+
+    // attachment styling
+    .li_img {
+        width: 30px;
+        height: 30px;
+    }
 }
 
 @media (max-width: 425px) {
@@ -225,11 +269,11 @@ li > .to_do_moved {
         justify-content: center;
     }
 
-    .cell {
+    .responsive_cell {
         font-size: 10px;
     }
 
-    .th {
+    th {
         font-size: 10px;
     }
 
@@ -253,5 +297,12 @@ li > .to_do_moved {
     .task_form {
         justify-content: center;
         flex-direction: column;
+    }
+
+
+    //attachments styling
+    .li_img {
+        width: 20px;
+        height: 20px;
     }
 }

@@ -5,6 +5,7 @@
 {% block title %} {{user_wf}} tasks {% endblock %}
 
 {% block content %}
+
 {% if tasks %}
 
 <p class="task_array" hidden>{{tasks}}</p>
@@ -23,10 +24,10 @@
       {% csrf_token %}
       <div class="form_btn_container">
         <button class="attachment_btn dialog_btn" type="submit">
-          <img  class="attachment_icon icon" src="{% static 'media/task_dialog/folder.png' %}" alt="Attachment Files">
+          <img  class="attachment_icon icon" src="{% static 'media/task_dialog/folder.png' %}" alt="Attachments">
         </button>
       </div>
-      {{file_form.as_p}}
+      {{attach_form.as_p}}
     </form>
 
     <form class="task_form" method="POST"> 
@@ -44,6 +45,23 @@
   </div>
 </dialog>
 <h1 class="welcome_heading">Welcome <b class="user_wf">{{user_wf}}</b></h1>
+
+{% if attachments %}
+<nav class="navbar">
+  <ul class="nav_list">
+    <li class="nav_item li_task_icon">
+      <button class="li_btn li_task_btn opacity" tabindex="1">
+        <img class="task_icon_img icon li_img" src="{% static 'media/task_dialog/task.png' %}" alt="Tasks" >
+      </button>
+    </li>
+    <li class="nav_item li_attach_icon">
+      <button class="li_btn li_attachment_btn" tabindex="2">
+        <img  class="li_attachment_icon icon li_img" src="{% static 'media/task_dialog/folder.png' %}" alt="Attachments">
+      </button>
+    </li>
+  </ul>
+</nav>
+{% endif %}
 
 <div class="tbl_header">
     <table cellpadding="0" cellspacing="0" border="0">
@@ -75,7 +93,9 @@
   <table cellpadding="0" cellspacing="0" border="0">
     <thead>
       <tr class="header_row">
-        <th class="files">ID File</th>
+        <th class="files th">Description</th>
+        <th class="files th">Loio Id</th>
+        <th class="files th">Comp Id</th>
       </tr>
     </thead>
   </table>
@@ -88,6 +108,13 @@
       
     </tbody>
   </table>
+</div>
+
+<div class="pdf_form_container">
+  <form method="POST" class="pdf_form">
+    {% csrf_token %}
+    <input type="text" class="pdf_data_input" name="data">
+  </form>
 </div>
 
 {% else %}

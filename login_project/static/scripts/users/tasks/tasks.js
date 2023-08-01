@@ -1,3 +1,4 @@
+import { attach_header_array } from "./attachment.js"
 const user_wf = document.querySelector('.user_wf').textContent
 const task_array_json = document.querySelector(".task_array").textContent
 const task_array = JSON.parse(task_array_json)
@@ -33,7 +34,7 @@ export const task_obj = {
     Dt: "",
 }
 
-const data_to_send = {
+export const data_to_send = {
     ID_Proc: "",
     Task: "",
     Flag: "",
@@ -55,40 +56,51 @@ function load_data_to_table(data) {
         */
         row = tbody.insertRow()
         row.id = i //setting id to each row
+        let tabindex = parseInt(i) + 3
+        row.setAttribute("tabindex", String(tabindex)) //navigate with tab
         cell = row.insertCell()
         cell.classList.add("cell")
+        cell.classList.add("responsive_cell")
         cell.classList.add("id_proc")
         cell.textContent = data[i].ID_Proc
         cell = row.insertCell()
         cell.classList.add("cell")
+        cell.classList.add("responsive_cell")
         cell.classList.add("proc")
         cell.textContent = data[i].Proc
         cell = row.insertCell()
         cell.classList.add("cell")
+        cell.classList.add("responsive_cell")
         cell.classList.add("task")
         cell.textContent = data[i].Task
         cell = row.insertCell()
         cell.classList.add("cell")
+        cell.classList.add("responsive_cell")
         cell.classList.add("role")
         cell.textContent = data[i].Role
         cell = row.insertCell()
         cell.classList.add("cell")
+        cell.classList.add("responsive_cell")
         cell.classList.add("doc")
         cell.textContent = data[i].Doc
         cell = row.insertCell()
         cell.classList.add("cell")
+        cell.classList.add("responsive_cell")
         cell.classList.add("to_do")
         cell.textContent = data[i].To_do
         cell = row.insertCell()
         cell.classList.add("cell")
+        cell.classList.add("responsive_cell")
         cell.classList.add("imp")
         cell.textContent = data[i].Imp.trim()
         cell = row.insertCell()
         cell.classList.add("cell")
+        cell.classList.add("responsive_cell")
         cell.classList.add("val")
         cell.textContent = data[i].Um
         cell = row.insertCell()
         cell.classList.add("cell")
+        cell.classList.add("responsive_cell")
         cell.classList.add("dt")
         cell.textContent = data[i].Dt
         task_click_listener(row)
@@ -288,6 +300,7 @@ function mobile_view() {
 
         //after hiding all elements, show the ones you need
         show_elements(show_elements_array)
+        show_elements(attach_header_array)
         
     } else {
         let cells_array = [...cells]
@@ -297,7 +310,6 @@ function mobile_view() {
         show_elements(cells_array)
         show_elements(column_array)
         for(let i in to_do_array) { //MOVING THE TODO INSIDE THE PROCESSO
-            console.log("going back to desktop view")
             let delete_text = id_proc_array[i].innerHTML
             delete_text = delete_text.replace(`<div class="to_do_moved"><b>To do</b>: ${to_do_array[i].innerHTML}</div>`, "")
             id_proc_array[i].innerHTML = delete_text

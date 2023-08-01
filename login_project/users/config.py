@@ -1,4 +1,3 @@
-from .models import Username
 from requests.auth import HTTPBasicAuth
 from requests import Session
 import requests
@@ -43,6 +42,8 @@ def authenticate_user_wf(request, url, payload):
         print(" ")
         print(f"Status code of POST SESSION: {r_endpoint_session_post.status_code}")
         print(" ")
+        # print(f"Webservice request header(what we send to the server): {r_endpoint_session_post.request.headers}")
+        # print(" ")
         print("CONFIG.PY END DEBUG")
 
 def get_session_data(request, session_get, session_post):
@@ -55,6 +56,10 @@ def get_session_data(request, session_get, session_post):
         request.session['post_status_code'] = session_post.status_code
         print(f"CONFIG.PY inside get_session function, POST DATA: Status_code: {session_post.status_code}")
 
+def request_task(request, user_s):
+    endpoint_url = 'http://turing.domain.eonegroup.it:8001/sap/bc/zwf_ext_tasks?user_wf='+user_s
+    authenticate_user_wf(request, endpoint_url, '') #no payload in a GET
+    return request.session['get_data']
 
 """ def check_user(user):
     model = Username
