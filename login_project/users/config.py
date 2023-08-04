@@ -1,5 +1,5 @@
 from requests.auth import HTTPBasicAuth
-from requests import Session
+# from requests import Session
 import requests
 class Credentials:
     user = 'eone'
@@ -61,18 +61,18 @@ def request_task(request, user_s):
     authenticate_user_wf(request, endpoint_url, '') #no payload in a GET
     return request.session['get_data']
 
-""" def check_user(user):
-    model = Username
-    if not model.objects.filter(username=user).exists():
-        print("New user.")
-        return model.objects.create(username=user)
-    else : 
-        return print("User already exists.") """
+def request_attach(request, user_s, payload):
+    attach_wbs_post = 'http://turing.domain.eonegroup.it:8001/sap/bc/zwf_ext_attach?user_wf='+user_s
+    authenticate_user_wf(request, attach_wbs_post, payload)
+
+    return request.session['post_data']
+
+def request_pdf(request, user_s, payload):
+    pdf_wbs_post = 'http://turing.domain.eonegroup.it:8001/sap/bc/zwf_ext_dsp_bds?user_wf='+user_s
+    authenticate_user_wf(request, pdf_wbs_post, payload)
+
+    return request.session['post_data']
     
-
-
-
-
 
 #test code
 """ test_url = 'https://httpbin.org/headers'

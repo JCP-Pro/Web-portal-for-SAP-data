@@ -9,6 +9,10 @@
 {% if tasks %}
 
 <p class="task_array" hidden>{{tasks}}</p>
+{% if pdf %}
+<p class="pdf_file" hidden>{{pdf}}</p>
+<a href="" class="download" hidden></a>
+{% endif %}
 <dialog class="task_dialog">
   <div class="exit_dialog_container">
     <button class="exit_dialog_btn">
@@ -44,7 +48,18 @@
     </form>
   </div>
 </dialog>
-<h1 class="welcome_heading">Welcome <b class="user_wf">{{user_wf}}</b></h1>
+<div class="welcome_container">
+  <div class="back_to_login_container">
+    <a href="{% url 'login' %}" class="login_link back_to_login">Back to login</a>
+  </div>
+  <h1 class="welcome_heading">Welcome <b class="user_wf">{{user_wf}}</b></h1>
+  <button class="theme_btn">
+    <img src="{% static 'media/themes/dark_mode.png' %}" alt="Dark mode icon." class="theme_img">
+  </button>
+  <button class="theme_btn hide_element dark_background">
+    <img src="{% static 'media/themes/light_mode.png' %}" alt="Light mode icon." class="theme_img">
+  </button>
+</div>
 
 {% if attachments %}
 <nav class="navbar">
@@ -110,10 +125,11 @@
   </table>
 </div>
 
-<div class="pdf_form_container">
+<div class="pdf_form_container" method="POST">
   <form method="POST" class="pdf_form">
     {% csrf_token %}
-    <input type="text" class="pdf_data_input" name="data">
+    <input type="text" class="pdf_data_input" name="data" hidden>
+    <input type="text" class="request_attach" name="data" hidden>
   </form>
 </div>
 

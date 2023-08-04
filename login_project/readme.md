@@ -33,3 +33,6 @@ submit form on click: https://stackoverflow.com/questions/6799533/how-to-submit-
 
 [TABLE_TEMPLATE]
 https://codepen.io/nikhil8krishnan/pen/WvYPvv?editors=1000
+
+[MIME_TYPES]
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types

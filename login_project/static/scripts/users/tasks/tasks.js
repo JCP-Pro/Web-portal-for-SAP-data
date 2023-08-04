@@ -1,7 +1,18 @@
-import { attach_header_array } from "./attachment.js"
+import { attach_header_array, get_attachments } from "./attachment.js"
 const user_wf = document.querySelector('.user_wf').textContent
 const task_array_json = document.querySelector(".task_array").textContent
 const task_array = JSON.parse(task_array_json)
+
+//THEMES
+const theme_btns = document.querySelectorAll(".theme_btn")//[0] = dark btn; [1] = light btn
+var default_theme
+function check_theme() {
+    if(localStorage.getItem("theme_color") !== null && localStorage.getItem("theme_color") == "false" ) {
+        default_theme = localStorage.getItem("theme_color")
+        change_theme()
+    }
+    else default_theme = "true"
+}
 
 //Diaolog buttons
 const task_dialog = document.querySelector(".task_dialog")
@@ -10,10 +21,11 @@ const confirm_btn = document.querySelector(".confirm_btn")
 const decline_btn = document.querySelector(".decline_btn")
 //Diaolog task description
 const open_task = document.querySelector(".current_task")
-// const data_input = document.querySelector(".data_input") //Probably gonna have a id so change to #id_data
 export const data_input = document.querySelectorAll("#id_data")
 data_input.forEach((e) => e.setAttribute('hidden', '')) //Hiding the input fields which sends data. 
 // data_input[0] is for hiding ATTACH INPUT
+
+//Table
 let tbody = document.querySelector(".task_body")
 let row, cell
 
@@ -34,7 +46,7 @@ export const task_obj = {
     Dt: "",
 }
 
-export const data_to_send = {
+const data_to_send = {
     ID_Proc: "",
     Task: "",
     Flag: "",
@@ -43,6 +55,51 @@ export const data_to_send = {
 
 //debug purpose
 //let task_data = []
+
+//set themes
+theme_btns[0].addEventListener('click', set_light_mode)
+theme_btns[1].addEventListener('click', set_dark_mode)
+
+function change_theme() {
+    if(get_attachments !== '') {
+        let li_btn = document.querySelectorAll(".li_btn")
+        li_btn[0].classList.toggle("dark_background")
+        li_btn[1].classList.toggle("dark_background")
+    }
+    theme_btns[0].classList.toggle("hide_element")//dark icon(i see this in default)
+    theme_btns[1].classList.toggle("hide_element")//light icon
+    let main = document.querySelector("body")
+    let login_btn = document.querySelector(".back_to_login")
+    let all_rows = document.querySelectorAll("tr")
+    let t_header = document.querySelectorAll(".tbl_header")
+    all_rows.forEach((e) => {
+        if(e.classList.contains("header_row") == false) {
+            e.classList.toggle("dark_background")
+        }
+    })
+    login_btn.classList.toggle("dark_background")
+    login_btn.classList.toggle("white_text")
+    t_header.forEach((e) => e.classList.toggle("dark_tbl_header"))
+    main.classList.toggle("dark_mode")
+}
+
+
+function set_light_mode() {
+    if (default_theme == "true"){
+        change_theme()
+    }
+    default_theme = "false"
+    localStorage.setItem("theme_color", default_theme)
+}
+
+
+function set_dark_mode() {
+    if (default_theme == "false"){
+        change_theme()
+    }
+    default_theme = "true"
+    localStorage.setItem("theme_color", default_theme)
+}
 
 load_data_to_table(task_array)
 
@@ -141,10 +198,17 @@ function task_operation() {
             task_obj.Imp = imp
             task_obj.Um = um
             task_obj.Dt = dt
+
+            
+            content_table.rows[i].onkeydown = function enter_key(e) {
+                if(e.key == "Enter"){
+                    console.log("Enter pressed")
+                    content_table.rows[i].click()
+                }
+            }
             break
         }
     }
-
     show_dialog()
 }
 
@@ -309,7 +373,7 @@ function mobile_view() {
         let id_proc_array = [...id_proc_cell]
         show_elements(cells_array)
         show_elements(column_array)
-        for(let i in to_do_array) { //MOVING THE TODO INSIDE THE PROCESSO
+        for(let i in to_do_array) { //MOVING THE TODO OUTSIDE THE PROCESSO
             let delete_text = id_proc_array[i].innerHTML
             delete_text = delete_text.replace(`<div class="to_do_moved"><b>To do</b>: ${to_do_array[i].innerHTML}</div>`, "")
             id_proc_array[i].innerHTML = delete_text
@@ -320,5 +384,6 @@ function mobile_view() {
 }
 
 window.addEventListener('resize', mobile_view)
+check_theme()
 
 console.log("end script")

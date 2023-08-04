@@ -1,7 +1,28 @@
 :root {
-    --sap_table_header_color: rgb(137, 187, 252);
+    --sap_table_header_color: rgb(5, 52, 113);
     --table_grid_color: rgb(200,200,200);
     --background_btn_color: gainsboro;
+    --dark_tbl_header: rgb(2, 29, 65);
+    --dark_hover:rgb(68, 68, 68);
+}
+
+.back_to_login {
+    padding: .5em 1em;
+    transition: 250ms;
+    text-decoration: none;
+    border-radius: 10px;
+    
+    &:hover {
+        background: var(--background_btn_color);
+    }
+}
+
+.white_text {
+    color:white;
+}
+
+.back_to_login_container {
+    margin: 1em;
 }
 
 //if error message
@@ -13,11 +34,50 @@
 
 .welcome_heading {
     margin: 1em;
+    text-align: center;
+}
+
+.theme_btn {
+    cursor: pointer;
+    border: none;
+    background: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 1.5rem 3rem;
+    padding: 1em;
+    transition: 250ms;
+    border-radius: 100%;
+
+    &:hover {
+        background: var(--background_btn_color);
+    }
+}
+
+.theme_img {
+    width: 30px;
+    height: 30px;
+}
+
+.dark_mode {
+    background: rgb(22, 22, 22);
+    color: white;
+}
+
+.dark_tbl_header {
+    background: var(--dark_tbl_header)!important;
+    border: 1px solid rgb(104,104,104);
+}
+
+.dark_background:hover {
+    background: rgb(68, 68, 68) !important;
 }
 
 .user_wf {
     text-transform: lowercase;
 }
+
+//end themes ----------------
 
 table{
     width:100%;
@@ -28,6 +88,7 @@ table{
 
 .tbl_header{
     background-color: var(--sap_table_header_color);
+    color: white;
    }
 .tbl_content{
     height:300px;
@@ -63,7 +124,7 @@ td{
 
 tr {
     cursor: pointer;
-
+    transition: 250ms;
     &:hover {
         background-color: gainsboro;
     }
@@ -98,6 +159,7 @@ tr {
     margin: 1em;
     border: none;
     background-color: rgba(255,255,255,1);
+    transition: 250ms;
 
     &:hover {
         background-color: gainsboro;
@@ -153,6 +215,7 @@ li > .to_do_moved {
     padding: .5em;
     float: right;
     cursor: pointer;
+    transition: 250ms;
     &:hover {
         background-color: gainsboro;   
     }
@@ -203,7 +266,7 @@ li > .to_do_moved {
     // border: 1px solid rgb(233, 233, 233);
     border: none;
     border-radius: 100%;
-    background-color: white;
+    background: none;
     padding: 1rem;
     cursor: pointer;
     transition: 250ms;
@@ -218,6 +281,11 @@ li > .to_do_moved {
     &:hover {
         opacity: 1;
     }
+}
+
+//PDF 
+.pdf_container {
+    margin: 0 2em;
 }
 
 
@@ -255,6 +323,17 @@ li > .to_do_moved {
 }
 
 @media (max-width: 425px) {
+
+    //themes
+    .theme_img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .theme_btn {
+        margin: 0 2.5rem;
+    }
+
     .task_dialog {
         width: -webkit-fill-available;
         font-size: .75rem;
